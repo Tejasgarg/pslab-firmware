@@ -232,7 +232,7 @@ static struct UartConf {
         // Receive buffer is empty.
         .URXDA = 0,
     },
-    .brgval = BAUD1000000,
+    .brgval = BAUD115200,
 };
 
 /********************/
