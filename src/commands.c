@@ -9,14 +9,9 @@
 #include "helpers/interval.h"
 #include "helpers/light.h"
 #include "helpers/rtc.h"
-#include "instruments/logicanalyzer.h"
 #include "instruments/multimeter.h"
 #include "instruments/oscilloscope.h"
-#include "instruments/powersource.h"
-#include "instruments/sensors.h"
-#include "instruments/wavegenerator.h"
 #include "registers/system/pin_manager.h"
-#include "instruments/sensors.h"
 #include "registers/converters/ctmu.h"
 
 /**
@@ -169,7 +164,7 @@ command_func_t* const cmd_table[NUM_PRIMARY_CMDS + 1][NUM_SECONDARY_CMDS_MAX + 1
     },
     { // 6 DAC
      // 0                               1 SET_DAC                       2 SET_CALIBRATED_DAC            3 SET_POWER
-        Undefined,                      Removed,                        Removed,                        POWER_SOURCE_SetPower,
+        Undefined,                      Removed,                        Removed,                        Removed,
      // 4                               5                               6                               7
         Undefined,                      Undefined,                      Undefined,                      Undefined,
      // 8                               9                               10                              11
@@ -185,15 +180,15 @@ command_func_t* const cmd_table[NUM_PRIMARY_CMDS + 1][NUM_SECONDARY_CMDS_MAX + 1
     },
     { // 7 WAVEGEN
      // 0                            1 SET_WG                   2                             3 SET_SQR1
-        Undefined,                   Unimplemented,             Undefined,                    WAVEGENERATOR_SetSquare1,
+        Undefined,                   Unimplemented,             Undefined,                    Removed,
      // 4 SET_SQR2                   5 SET_SQRS                 6                             7 SQR4
-        WAVEGENERATOR_SetSquare2,    Removed,                   Undefined,                    WAVEGENERATOR_SetSquareAll,
+        Removed,                     Removed,                   Undefined,                    Removed,
      // 8 MAP_REFERENCE              9 SET_WG_PHASE             10 SET_WAVEFORM_TYPE          11 SELECT_FREQ_REGISTER
-        WAVEGENERATOR_MapReference,  WAVEGENERATOR_SetSineDual, Unimplemented,                Unimplemented,
+        Removed,                     Removed,                   Unimplemented,                Unimplemented,
      // 12 DELAY_GENERATOR           13 SET_SINE1               14 SET_SINE2                  15 LOAD_WAVEFORM1
-        Unimplemented,               WAVEGENERATOR_SetSine1,    WAVEGENERATOR_SetSine2,       WAVEGENERATOR_LoadWaveForm1,
+        Unimplemented,               Removed,                   Removed,                      Removed,
      // 16 LOAD_WAVEFORM2            17 SQR1_PATTERN            18 READ_WAVEFORM1             19 READ_WAVEFORM2
-        WAVEGENERATOR_LoadWaveForm2, Removed,                   WAVEGENERATOR_ReadWaveForm1,  WAVEGENERATOR_ReadWaveForm2,
+        Removed,                     Removed,                   Removed,                      Removed,
      // 20                           21                         22                            23
         Undefined,                   Undefined,                 Undefined,                    Undefined,
      // 24                           25                         26                            27
@@ -235,13 +230,13 @@ command_func_t* const cmd_table[NUM_PRIMARY_CMDS + 1][NUM_SECONDARY_CMDS_MAX + 1
      // 0                               1 GET_TIMING                    2                               3
         Undefined,                      Unimplemented,                  Undefined,                      Undefined,
      // 4 START_ONE_CHAN_LA             5 START_TWO_CHAN_LA             6 START_FOUR_CHAN_LA            7 FETCH_DMA_DATA
-        LOGICANALYZER_OneChannel,       LOGICANALYZER_TwoChannel,       LOGICANALYZER_FourChannel,      Removed,
+        Removed,                        Removed,                        Removed,                        Removed,
      // 8 FETCH_INT_DMA_DATA            9 FETCH_LONG_DMA_DATA           10 COMPARATOR_TO_LA             11 GET_INITIAL_STATES
         BUFFER_FetchInt,                BUFFER_FetchLong,               Unimplemented,                  INTERVAL_GetState,
      // 12 TIMING_MEASUREMENTS          13 INTERVAL_MEASUREMENTS        14 CONFIGURE_COMPARATOR         15 START_ALTERNATE_ONE_CHAN_LA
-        Unimplemented,                  Unimplemented,                  Removed,                        LOGICANALYZER_OneChannelAlt,
+        Unimplemented,                  Unimplemented,                  Removed,                        Removed,
      // 16 START_THREE_CHAN_LA          17 STOP_LA                      18                              19
-        LOGICANALYZER_ThreeChannel,     LOGICANALYZER_Stop,             Undefined,                      Undefined,
+        Removed,                        Removed,                        Undefined,                      Undefined,
      // 20                              21                              22                              23
         Undefined,                      Undefined,                      Undefined,                      Undefined,
      // 24                              25                              26                              27
@@ -261,7 +256,7 @@ command_func_t* const cmd_table[NUM_PRIMARY_CMDS + 1][NUM_SECONDARY_CMDS_MAX + 1
      // 20 GET_ALTERNATE_HIGH_FREQUENCY 21 SET_RGB_COMMON               22 SET_RGB3                     23 START_CTMU
         Unimplemented,                  LIGHT_RGBPin,                   Removed,                        CTMU_Start,
      // 24 STOP_CTMU                    25 START_COUNTING               26 FETCH_COUNT                  27 FILL_BUFFER
-        CTMU_Stop,                      SENSORS_StartCounter,           SENSORS_GetCounter,             BUFFER_Fill,
+        CTMU_Stop,                      Removed,                        Removed,                        BUFFER_Fill,
     },
     { // 12 PASSTHROUGH
      // 0          1                 2          3
@@ -312,3 +307,4 @@ command_func_t* const cmd_table[NUM_PRIMARY_CMDS + 1][NUM_SECONDARY_CMDS_MAX + 1
         Undefined,                      Undefined,                      Undefined,                      Undefined,
     },    
 };
+

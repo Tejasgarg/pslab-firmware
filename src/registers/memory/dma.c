@@ -1,5 +1,4 @@
 #include "dma.h"
-#include "../../instruments/logicanalyzer.h"
 #include "../../registers/comparators/ic1.h"
 #include "../../registers/comparators/ic2.h"
 #include "../../registers/comparators/ic3.h"
@@ -186,10 +185,6 @@ void DMA_InitializeChannel3(void) {
     DMA3CNT = 0x00;
     // Clearing Channel 3 Interrupt Flag;
     IFS2bits.DMA3IF = false;
-}
-
-void DMA_SetLogicAnalyzerChannelMode(DMA_MODES mode) {
-    DMA_MODE = mode;
 }
 
 void DMA_PrepareChannel0(uint16_t count, volatile uint16_t* low_address, 
