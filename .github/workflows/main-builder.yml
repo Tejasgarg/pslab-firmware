@@ -77,7 +77,7 @@ jobs:
             run: |
               sudo apt-get update
               sudo apt-get install -y srecord
-              mv ${{ matrix.branch }}/build_${{ matrix.target }}/pslab-firmware.hex pslab-bootloader/
+              mv ${{ matrix.branch }}/build_${{ matrix.target }}/pslab-firmware.hex pslab-bootloader/build/pslab-firmware.hex
               cd pslab-bootloader
               chmod +x combine_hex.sh
               ./combine_hex.sh
