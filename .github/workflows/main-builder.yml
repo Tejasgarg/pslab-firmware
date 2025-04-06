@@ -67,33 +67,22 @@ jobs:
           
           - name: Fetch bootloader
             run: |
-              git clone https://github.com/fossasia/pslab-bootloader.git pslab-bootloader
+              git clone https://github.com/Tejasgarg/pslab-bootloader.git pslab-bootloader
               cd pslab-bootloader
               mkdir build
               cd build
               wget https://github.com/fossasia/pslab-bootloader/releases/latest/download/pslab-bootloader.hex
-
-          - name: Download XC8 Compiler
-            if: steps.cache-compiler.outputs.cache-hit != 'true'
-            run: |
-              mkdir -p ~/.cache/mplab-xc
-              cd ~/.cache/mplab-xc
-              wget https://ww1.microchip.com/downloads/aemDocuments/documents/DEV/ProductDocuments/SoftwareTools/xc8-v3.00-full-install-linux-x64-installer.run
-              chmod +x xc8-v3.00-full-install-linux-x64-installer.run
-
-          - name: Install XC8 Compiler
-            run: |
-              cd ~/.cache/mplab-xc
-              sudo ./xc8-v3.00-full-install-linux-x64-installer.run --mode unattended --netservername dontknow
-              echo "/opt/microchip/xc8/v3.00/pic/bin" >> $GITHUB_PATH
-
-          - name: Combine hex files
-            run: |
-              mv ${{ matrix.branch }}/build_${{ matrix.target }}/pslab-firmware.hex pslab-bootloader/build/pslab-firmware.hex
-              cd pslab-bootloader
-              chmod +x combine_hex.sh
-              ./combine_hex.sh  
           
+          - name: Combine HEX files using srecord
+            run: |
+              sudo apt-get update
+              sudo apt-get install -y srecord
+              mv ${{ matrix.branch }}/build_${{ matrix.target }}/pslab-firmware.hex pslab-bootloader/build/pslab-firmware.hex
+              cd pslab-bootloader/build
+              srec_cat pslab-firmware.hex -Intel \
+                       pslab-bootloader.hex -Intel -offset 0x3C000 \
+                       -o combined.hex -Intel
+
           - name: Publish build files
             uses: actions/upload-artifact@v4
             with:
